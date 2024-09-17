@@ -2,12 +2,12 @@
 #include "driver/rmt_tx.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "esp_random.h"
+
 #include "cl.h"
 
 #define TICK_RESOLUTION 10000000
 
-#define SPARK_SIZE 30
+
 
 void led_driver(void *ctx){
     Context_t *context=(Context_t*)ctx;
@@ -47,43 +47,11 @@ void led_driver(void *ctx){
             .eot_level=0
         }
     };
-    int k = 0;
+    
     while(1){
-        int spark[SPARK_SIZE];
-        for(int i=0;i<SPARK_SIZE;++i){
-            spark[i] = (uint32_t)(esp_random()/(float)UINT32_MAX*context->led_count);
-        }
-        for(int i=0;i<context->led_count;i++){
-            bool b = false;
-            for(int j=0;j<SPARK_SIZE;j++){
-                if(i==spark[j]){
-                    b=true;
-                }
-            }
-            if(b){
-                uint32_t r=esp_random();
-                uint32_t r2=esp_random();
-                context->led_data[i*3+0] = r%2==0?(r2%2==0?255:128):0;//G
-                r=esp_random();
-                r2=esp_random();
-                context->led_data[i*3+1] = r%2==0?(r2%2==0?255:128):0;//R
-                r=esp_random();
-                r2=esp_random();
-                context->led_data[i*3+2] = r%2==0?(r2%2==0?255:128):0; //B
-                //esp_fill_random(led_data+i*3,3);
-            }else{
-                context->led_data[i*3+0] = 0;
-                context->led_data[i*3+1] = 0;
-                context->led_data[i*3+2] = 0;
-            }
-        }
-        k++;
-        if(k==context->led_count){
-            k=0;
-        }
+        context->mode->run(context->led_data,context->led_count);
         ESP_ERROR_CHECK(rmt_transmit(led_chan, led_encoder, context->led_data, context->led_count*3, &tx_config));
         ESP_ERROR_CHECK(rmt_tx_wait_all_done(led_chan, portMAX_DELAY));
         vTaskDelay(10);
-        
     }
 }

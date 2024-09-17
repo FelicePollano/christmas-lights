@@ -1,2 +1,2 @@
-idf_component_register(SRCS "christmas-lights.c" "led-driver.c"
+idf_component_register(SRCS "christmas-lights.c" "led-driver.c" "spark_0.c"
                     INCLUDE_DIRS ".")
