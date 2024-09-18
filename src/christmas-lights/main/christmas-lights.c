@@ -33,8 +33,9 @@ void app_main(void)
     gpio_reset_pin(LED1);
     //gpio_set_direction(LED1,GPIO_MODE_OUTPUT);
     char* mainTask = pcTaskGetName(NULL);
-    ESP_LOGI(mainTask,"Hello world!\n");
     // led driver
     xTaskCreate(led_driver,"led_driver",2048,&context,LED_TASK_PRIORITY, NULL);
+    ESP_LOGI(mainTask,"Initialization done!\n");
     vTaskDelete(NULL);
+    
 }
