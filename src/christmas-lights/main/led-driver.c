@@ -47,11 +47,17 @@ void led_driver(void *ctx){
             .eot_level=0
         }
     };
-    
+    Mode_t *current_mode = NULL;
+    int delay;
     while(1){
-        context->mode->run(context->led_data,context->led_count);
+        if(current_mode!=context->mode){
+            current_mode = context->mode;
+            delay = context->mode->init(context->led_data,context->led_count);
+        }else{
+            delay = context->mode->run(context->led_data,context->led_count);
+        }
         ESP_ERROR_CHECK(rmt_transmit(led_chan, led_encoder, context->led_data, context->led_count*3, &tx_config));
         ESP_ERROR_CHECK(rmt_tx_wait_all_done(led_chan, portMAX_DELAY));
-        vTaskDelay(10);
+        vTaskDelay(delay/portTICK_PERIOD_MS);
     }
 }

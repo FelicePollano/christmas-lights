@@ -8,6 +8,7 @@
 
 #include "cl.h"
 #include "spark_0.h"
+#include "twirl_sparks.h"
 
 #define LED1 16
 #define LEDCOUNT 600
@@ -19,6 +20,7 @@
 static uint8_t led_data[ LEDCOUNT * 3];
 static Mode_t modes[]={
     {.init=spark_0init,.run=spark_0run,.clean=spark_0clean,.tweak=spark_0tweak} //simple random sparks of multicolor lights 
+    ,{.init=twirls_init,.run=twirls_run,.clean=twirls_clean,.tweak=twirls_tweak} //random sparks of multicolor lights twirling 
 };
 void app_main(void)
 {
@@ -26,7 +28,7 @@ void app_main(void)
         .led_GPIO=LED1,
         .led_data = led_data,
         .led_count = LEDCOUNT,
-        .mode = &modes[0]
+        .mode = &modes[1]
     };
     gpio_reset_pin(LED1);
     //gpio_set_direction(LED1,GPIO_MODE_OUTPUT);
