@@ -7,6 +7,9 @@
 
 #define TICK_RESOLUTION 10000000
 
+/// this code, for the RMT part is based on
+/// Esp-Idf official examples https://github.com/espressif/esp-idf/tree/master/examples/peripherals/rmt/led_strip/main
+/// is however a sensible simplified version, expecially for the encoder part.
 
 
 void led_driver(void *ctx){
