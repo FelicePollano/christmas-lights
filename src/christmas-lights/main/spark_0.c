@@ -42,5 +42,5 @@ int spark_0run(uint8_t *data,int count){
             data[i*3+2] = 0;
         }
     }
-    return 10; //10 ms wait time
+    return 100; //100 ms wait time
 } 

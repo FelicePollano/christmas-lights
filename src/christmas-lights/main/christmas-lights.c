@@ -4,7 +4,7 @@
 #include "esp_log.h"
 #include "driver/gpio.h"
 #include "driver/rmt_tx.h"
-#include "esp_random.h"
+#include "bootloader_random.h"
 
 #include "cl.h"
 #include "spark_0.h"
@@ -16,6 +16,7 @@
 
 
 #define LED_TASK_PRIORITY 2
+#define DIO_TASK_PRIORITY 1
 
 static uint8_t led_data[ LEDCOUNT * 3];
 static Mode_t modes[]={
@@ -28,13 +29,18 @@ void app_main(void)
         .led_GPIO=LED1,
         .led_data = led_data,
         .led_count = LEDCOUNT,
-        .mode = &modes[1]
+        .mode = &modes[0],
+        .modes = modes,
+        .modes_count = sizeof(modes)/sizeof(modes[0])
     };
     gpio_reset_pin(LED1);
+    bootloader_random_enable();//remove when WIFI is enabled
     //gpio_set_direction(LED1,GPIO_MODE_OUTPUT);
     char* mainTask = pcTaskGetName(NULL);
     // led driver
     xTaskCreate(led_driver,"led_driver",2048,&context,LED_TASK_PRIORITY, NULL);
+    // digital I/O
+    xTaskCreate(dio,"dio",2048,&context,DIO_TASK_PRIORITY, NULL);
     ESP_LOGI(mainTask,"Initialization done!\n");
     vTaskDelete(NULL);
     

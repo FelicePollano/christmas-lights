@@ -51,6 +51,9 @@ void led_driver(void *ctx){
     int delay;
     while(1){
         if(current_mode!=context->mode){
+            if(current_mode){
+                current_mode->clean(context->led_data,context->led_count);
+            }
             current_mode = context->mode;
             delay = context->mode->init(context->led_data,context->led_count);
         }else{
