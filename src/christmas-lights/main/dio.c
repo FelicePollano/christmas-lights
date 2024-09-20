@@ -5,8 +5,8 @@
 
 #include "cl.h"
 
-//according to docs this pin supports internall pull-up resistor ( and pull up is even the default at wakeup )
-//I want mode chang button to act when grouded, in order to avoid having 3v3 volt extra wire to handle positive logic 
+//according to the docs this pin supports internal pull-up resistor ( and pull up is even the default at wakeup )
+//I want mode chang button to act when grounded, in order to avoid having 3v3 volt extra wire to handle positive logic 
 #define MODECHANGE 5 
 // handle digital I/O
 void dio(void* ctx){
