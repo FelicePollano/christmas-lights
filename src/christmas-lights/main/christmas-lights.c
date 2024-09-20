@@ -9,6 +9,7 @@
 #include "cl.h"
 #include "spark_0.h"
 #include "twirl_sparks.h"
+#include "spark_fade.h"
 
 #define LED1 16
 #define LEDCOUNT 600
@@ -16,12 +17,13 @@
 
 
 #define LED_TASK_PRIORITY 2
-#define DIO_TASK_PRIORITY 1
+#define DIO_TASK_PRIORITY 0
 
 static uint8_t led_data[ LEDCOUNT * 3];
 static Mode_t modes[]={
     {.init=spark_0init,.run=spark_0run,.clean=spark_0clean,.tweak=spark_0tweak} //simple random sparks of multicolor lights 
     ,{.init=twirls_init,.run=twirls_run,.clean=twirls_clean,.tweak=twirls_tweak} //random sparks of multicolor lights twirling 
+     ,{.init=spark_fade_init,.run=spark_fade_run,.clean=spark_fade_clean,.tweak=spark_fade_tweak} //fading sparks 
 };
 void app_main(void)
 {
