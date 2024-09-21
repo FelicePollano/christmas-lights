@@ -23,7 +23,8 @@ static uint8_t led_data[ LEDCOUNT * 3];
 static Mode_t modes[]={
     {.init=spark_0init,.run=spark_0run,.clean=spark_0clean,.tweak=spark_0tweak} //simple random sparks of multicolor lights 
     ,{.init=twirls_init,.run=twirls_run,.clean=twirls_clean,.tweak=twirls_tweak} //random sparks of multicolor lights twirling 
-     ,{.init=spark_fade_init,.run=spark_fade_run,.clean=spark_fade_clean,.tweak=spark_fade_tweak} //fading sparks 
+    ,{.init=spark_fade_init,.run=spark_fade_run,.clean=spark_fade_clean,.tweak=spark_fade_tweak} //fading sparks
+    ,{.init=spark_fade_init,.run=spark_fade_run_inv,.clean=spark_fade_clean,.tweak=spark_fade_tweak} //un-fading sparks 
 };
 void app_main(void)
 {
