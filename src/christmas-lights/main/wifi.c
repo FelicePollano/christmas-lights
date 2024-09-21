@@ -11,7 +11,7 @@
 #include "esp_event.h"
 #include "esp_system.h"
 #include "nvs_flash.h"
-
+#include "secret.h"
 #define TAG "WIFI"
 
 static void wifi_event_handler(void *event_handler_arg, esp_event_base_t event_base, int32_t event_id, void *event_data)
@@ -46,8 +46,8 @@ void wifi_connect(void *){
     esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, wifi_event_handler, NULL);
     wifi_config_t wifi_configuration = {
         .sta = {
-            .ssid = "FeliceLidia2",
-            .password = "felicino"}};
+            .ssid = SSIS,
+            .password = PASSWD}};
     esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_configuration);
     esp_wifi_set_mode(WIFI_MODE_STA);
     esp_wifi_start();

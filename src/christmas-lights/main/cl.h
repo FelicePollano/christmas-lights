@@ -17,4 +17,4 @@ typedef struct Context{
 
 void led_driver(void *context);
 void dio(void *context);
-
+void wifi_connect(void *);

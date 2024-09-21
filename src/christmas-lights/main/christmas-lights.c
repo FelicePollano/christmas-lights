@@ -28,6 +28,7 @@ static Mode_t modes[]={
 };
 void app_main(void)
 {
+    wifi_connect(NULL);
     Context_t context={
         .led_GPIO=LED1,
         .led_data = led_data,
@@ -46,5 +47,4 @@ void app_main(void)
     xTaskCreate(dio,"dio",2048,&context,DIO_TASK_PRIORITY, NULL);
     ESP_LOGI(mainTask,"Initialization done!\n");
     vTaskDelete(NULL);
-    
 }
