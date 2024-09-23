@@ -18,6 +18,7 @@
 
 #define LED_TASK_PRIORITY 2
 #define DIO_TASK_PRIORITY 0
+#define REMOTE_TASK_PRIORITY 2
 
 static uint8_t led_data[ LEDCOUNT * 3];
 static Mode_t modes[]={
@@ -41,6 +42,8 @@ void app_main(void)
     bootloader_random_enable();//remove when WIFI is enabled
     //gpio_set_direction(LED1,GPIO_MODE_OUTPUT);
     char* mainTask = pcTaskGetName(NULL);
+    //remote receiver
+    //xTaskCreate(ir_receiver,"ir",4096,&context,REMOTE_TASK_PRIORITY, NULL);
     // led driver
     xTaskCreate(led_driver,"led_driver",2048,&context,LED_TASK_PRIORITY, NULL);
     // digital I/O

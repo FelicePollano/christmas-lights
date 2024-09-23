@@ -4,9 +4,9 @@
 #include "esp_log.h"
 #include "driver/rmt_tx.h"
 #include "driver/rmt_rx.h"
-
-#define IR_PIN 22
-#define IR_RESOLUTION_HZ     1000000 // 1MHz resolution warn conflict with WS2812 tx?
+#include "cl.h"
+#define IR_PIN 9
+#define IR_RESOLUTION_HZ     10000000 // 1MHz resolution warn conflict with WS2812 tx?
 #define TAG "IR"
 
 
@@ -48,8 +48,9 @@ static bool rx_done_callback(rmt_channel_handle_t channel, const rmt_rx_done_eve
     return high_task_wakeup == pdTRUE;
 }
 
-void ir_receiver(void *q){
-
+void ir_receiver(void *c){
+    int current_mode = 0;
+    Context_t *context = (Context_t*)c;
     rmt_rx_channel_config_t rx_channel_cfg = {
         .clk_src = RMT_CLK_SRC_DEFAULT,
         .resolution_hz = IR_RESOLUTION_HZ,
@@ -93,7 +94,32 @@ void ir_receiver(void *q){
                 ,rx_data.received_symbols[i].level1
                 );
             }*/
-            ESP_EARLY_LOGI(TAG,"received %04x",decode(rx_data));
+            uint32_t code = decode(rx_data);
+             if(current_mode+1<context->modes_count){
+                        current_mode++;
+                    }else{
+                        current_mode=0;
+                    }
+                    context->mode=&context->modes[current_mode];
+            
+            switch(code){
+                case 0xfb04ff00:
+                    if(current_mode+1<context->modes_count){
+                        current_mode++;
+                    }else{
+                        current_mode=0;
+                    }
+                    context->mode=&context->modes[current_mode];
+                    break;
+                case 0xfa05ff00:
+                    if(current_mode+1<context->modes_count){
+                        current_mode++;
+                    }else{
+                        current_mode=0;
+                    }
+                    context->mode=&context->modes[current_mode];
+                    break;
+            }
             vTaskDelay(100/portTICK_PERIOD_MS );
             ESP_ERROR_CHECK(rmt_receive(rx_channel, raw_symbols, sizeof(raw_symbols), &receive_config));
         } 
