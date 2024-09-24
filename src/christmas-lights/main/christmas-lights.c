@@ -18,14 +18,13 @@
 
 #define LED_TASK_PRIORITY 2
 #define DIO_TASK_PRIORITY 0
-#define REMOTE_TASK_PRIORITY 2
 
 static uint8_t led_data[ LEDCOUNT * 3];
 static Mode_t modes[]={
-    {.init=spark_0init,.run=spark_0run,.clean=spark_0clean,.tweak=spark_0tweak} //simple random sparks of multicolor lights 
-    ,{.init=twirls_init,.run=twirls_run,.clean=twirls_clean,.tweak=twirls_tweak} //random sparks of multicolor lights twirling 
-    ,{.init=spark_fade_init,.run=spark_fade_run,.clean=spark_fade_clean,.tweak=spark_fade_tweak} //fading sparks
-    ,{.init=spark_fade_init_inv,.run=spark_fade_run_inv,.clean=spark_fade_clean,.tweak=spark_fade_tweak} //un-fading sparks 
+    {.init=spark_0init,.run=spark_0run,.clean=spark_0clean} //simple random sparks of multicolor lights 
+    ,{.init=twirls_init,.run=twirls_run,.clean=twirls_clean} //random sparks of multicolor lights twirling 
+    ,{.init=spark_fade_init,.run=spark_fade_run,.clean=spark_fade_clean} //fading sparks
+    ,{.init=spark_fade_init_inv,.run=spark_fade_run_inv,.clean=spark_fade_clean} //un-fading sparks 
 };
 void app_main(void)
 {
@@ -36,15 +35,14 @@ void app_main(void)
         .led_count = LEDCOUNT,
         .mode = &modes[0],
         .modes = modes,
-        .modes_count = sizeof(modes)/sizeof(modes[0])
+        .modes_count = sizeof(modes)/sizeof(modes[0]),
+        .cpicker=rnd_cpicker
     };
     gpio_reset_pin(LED1);
     bootloader_random_enable();//remove when WIFI is enabled
     //gpio_set_direction(LED1,GPIO_MODE_OUTPUT);
     char* mainTask = pcTaskGetName(NULL);
-    //remote receiver
-    //xTaskCreate(ir_receiver,"ir",4096,&context,REMOTE_TASK_PRIORITY, NULL);
-    // led driver
+        // led driver
     xTaskCreate(led_driver,"led_driver",2048,&context,LED_TASK_PRIORITY, NULL);
     // digital I/O
     xTaskCreate(dio,"dio",2048,&context,DIO_TASK_PRIORITY, NULL);

@@ -58,9 +58,9 @@ void led_driver(void *ctx){
                 current_mode->clean(context->led_data,context->led_count);
             }
             current_mode = context->mode;
-            delay = context->mode->init(context->led_data,context->led_count);
+            delay = context->mode->init(context->led_data,context->led_count,context->cpicker);
         }else{
-            delay = context->mode->run(context->led_data,context->led_count);
+            delay = context->mode->run(context->led_data,context->led_count,context->cpicker);
         }
         ESP_ERROR_CHECK(rmt_transmit(led_chan, led_encoder, context->led_data, context->led_count*3, &tx_config));
         ESP_ERROR_CHECK(rmt_tx_wait_all_done(led_chan, portMAX_DELAY));

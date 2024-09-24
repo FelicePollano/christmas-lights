@@ -1,19 +1,20 @@
 #include <stdio.h>
 #include "esp_random.h"
+#include "cl.h"
+
 #define SPARK_SIZE 30
 
 static int spark[SPARK_SIZE];
 
-int spark_0init(uint8_t *data,int count){
+int spark_0init(uint8_t *data,int count,RGB_t (*cpicker)()){
     //nothing to do
     return 0; //0 ms wait time
 } 
 void spark_0clean(uint8_t *data ,int count){
     //nothing to do
 }
-void spark_0tweak(char *param ,char* val){
-}
-int spark_0run(uint8_t *data,int count){
+
+int spark_0run(uint8_t *data,int count,RGB_t (*cpicker)()){
 
     for(int i=0;i<SPARK_SIZE;++i){
             spark[i] = (uint32_t)(esp_random()/(float)UINT32_MAX*count);
@@ -26,15 +27,10 @@ int spark_0run(uint8_t *data,int count){
             }
         }
         if(b){
-            uint32_t r=esp_random();
-            uint32_t r2=esp_random();
-            data[i*3+0] = r%2==0?(r2%2==0?255:128):0;//G
-            r=esp_random();
-            r2=esp_random();
-            data[i*3+1] = r%2==0?(r2%2==0?255:128):0;//R
-            r=esp_random();
-            r2=esp_random();
-            data[i*3+2] = r%2==0?(r2%2==0?255:128):0; //B
+            RGB_t c = cpicker();
+            data[i*3+0] = c.G;//G
+            data[i*3+1] = c.R;//R
+            data[i*3+2] = c.B; //B
             //esp_fill_random(led_data+i*3,3);
         }else{
             data[i*3+0] = 0;
