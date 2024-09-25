@@ -24,3 +24,23 @@ RGB_t rnd_cpicker(){ //totally random color picker
     color.B = (uint8_t)(esp_random()/(float)UINT32_MAX*255);
     return color;
 }
+
+RGB_t by_vals(uint8_t R,uint8_t G,uint8_t B){
+    RGB_t c={.R=R,.G=G,.B=B};
+    return c;
+}
+RGB_t c1_cpicker() { return by_vals(255,0,0); }
+RGB_t c2_cpicker() { return by_vals(0,255,0); }
+RGB_t c3_cpicker() { return by_vals(0,0,255); }
+RGB_t c4_cpicker() { return by_vals(0,255,255); }
+RGB_t c5_cpicker() { return by_vals(255,0,255); }
+RGB_t c6_cpicker() { return by_vals(255,255,0); }
+RGB_t c7_cpicker() { return by_vals(255,255,255); }
+RGB_t c8_cpicker() { return by_vals(128,255,255); }
+RGB_t c9_cpicker() { return by_vals(255,128,255); }
+RGB_t c10_cpicker() { return by_vals(255,255,128); }
+RGB_t c11_cpicker() { return by_vals(255,128,0); }
+RGB_t c12_cpicker() { return by_vals(128,0,0); }
+RGB_t c13_cpicker() { return by_vals(128,255,0); }
+RGB_t c14_cpicker() { return by_vals(128,255,128); }
+RGB_t c15_cpicker() { return by_vals(128,128,255); }

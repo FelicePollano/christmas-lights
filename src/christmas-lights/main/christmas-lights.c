@@ -26,6 +26,25 @@ static Mode_t modes[]={
     ,{.init=spark_fade_init,.run=spark_fade_run,.clean=spark_fade_clean} //fading sparks
     ,{.init=spark_fade_init_inv,.run=spark_fade_run_inv,.clean=spark_fade_clean} //un-fading sparks 
 };
+static  RGB_t (*cpickers[])()={
+    hi_cpicker,
+    rnd_cpicker,
+    c1_cpicker, 
+    c2_cpicker,
+    c3_cpicker,
+    c4_cpicker,
+    c5_cpicker,
+    c6_cpicker,
+    c7_cpicker,
+    c8_cpicker,
+    c9_cpicker,
+    c10_cpicker,
+    c11_cpicker,
+    c12_cpicker,
+    c13_cpicker,
+    c14_cpicker,
+    c15_cpicker
+};
 void app_main(void)
 {
     //wifi_connect(NULL); /* not reliable on single core board when using RMT for led driving :(
@@ -36,7 +55,9 @@ void app_main(void)
         .mode = &modes[0],
         .modes = modes,
         .modes_count = sizeof(modes)/sizeof(modes[0]),
-        .cpicker=rnd_cpicker
+        .cpickers_count = sizeof(cpickers)/sizeof(cpickers[0]),
+        .cpicker=cpickers[0],
+        .cpickers=cpickers
     };
     gpio_reset_pin(LED1);
     bootloader_random_enable();//remove when WIFI is enabled

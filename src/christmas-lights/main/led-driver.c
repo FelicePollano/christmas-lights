@@ -51,13 +51,15 @@ void led_driver(void *ctx){
         }
     };
     Mode_t *current_mode = NULL;
+    void *current_cpicker= NULL;
     int delay;
     while(1){
-        if(current_mode!=context->mode){
+        if(current_mode!=context->mode||current_cpicker!=context->cpicker){
             if(current_mode){
                 current_mode->clean(context->led_data,context->led_count);
             }
             current_mode = context->mode;
+            current_cpicker = context->cpicker; 
             delay = context->mode->init(context->led_data,context->led_count,context->cpicker);
         }else{
             delay = context->mode->run(context->led_data,context->led_count,context->cpicker);

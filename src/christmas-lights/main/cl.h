@@ -19,6 +19,8 @@ typedef struct Context{
     Mode_t *modes;
     int modes_count;
     RGB_t (*cpicker)(); //color picker 
+    RGB_t (**cpickers)(); //color pickers 
+    int cpickers_count;
 } Context_t;
 
 void led_driver(void *context);
@@ -27,3 +29,18 @@ void ir_receiver(void *c);
 
 RGB_t hi_cpicker(); //random color picker, high intensity only
 RGB_t rnd_cpicker(); //totally random color picker
+RGB_t c1_cpicker(); // fixed color pickers
+RGB_t c2_cpicker();
+RGB_t c3_cpicker();
+RGB_t c4_cpicker();
+RGB_t c5_cpicker();
+RGB_t c6_cpicker();
+RGB_t c7_cpicker();
+RGB_t c8_cpicker();
+RGB_t c9_cpicker();
+RGB_t c10_cpicker();
+RGB_t c11_cpicker();
+RGB_t c12_cpicker();
+RGB_t c13_cpicker();
+RGB_t c14_cpicker();
+RGB_t c15_cpicker();
