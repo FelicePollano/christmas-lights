@@ -12,6 +12,7 @@ typedef struct DL
     uint8_t G;
     uint8_t B;
     int32_t pos;
+    uint8_t bounches;
 }DL_t;
 
 static DL_t leds[SPARK_COUNT];
@@ -24,6 +25,7 @@ int twirls_init(uint8_t *data,int count,RGB_t (*cpicker)()){
         leds[i].R = color.R;//R
         leds[i].B = color.B; //B
         leds[i].pos=(uint32_t)(esp_random()/(float)UINT32_MAX*count+1);
+        leds[i].bounches=0;
     }
     return 0; //0 ms wait time
 } 
@@ -34,15 +36,11 @@ void twirls_clean(uint8_t *data ,int count){
 int twirls_run(uint8_t *data,int count,RGB_t (*cpicker)()){
     memset(data,0,3*count);
     for(int i=0;i<SPARK_COUNT;++i){
-        if(data[leds[i].pos*3+0]==0){
-            data[leds[i].pos*3+0]=leds[i].G;
-            data[leds[i].pos*3+1]=leds[i].R;
-            data[leds[i].pos*3+2]=leds[i].B;
-        }else{
-            data[leds[i].pos*3+0]=255;
-            data[leds[i].pos*3+1]=255;
-            data[leds[i].pos*3+2]=255;
-        }
+        
+        data[leds[i].pos*3+0]=leds[i].G;
+        data[leds[i].pos*3+1]=leds[i].R;
+        data[leds[i].pos*3+2]=leds[i].B;
+       
         leds[i].pos+=leds[i].direction;
         if(leds[i].pos<0||leds[i].pos>count){
             RGB_t color = cpicker();
@@ -54,4 +52,27 @@ int twirls_run(uint8_t *data,int count,RGB_t (*cpicker)()){
         }
     }
     return 15;
+}
+int twirls_run_bounch(uint8_t *data,int count,RGB_t (*cpicker)()){
+    memset(data,0,3*count);
+    for(int i=0;i<SPARK_COUNT;++i){
+        
+        data[leds[i].pos*3+0]=leds[i].G;
+        data[leds[i].pos*3+1]=leds[i].R;
+        data[leds[i].pos*3+2]=leds[i].B;
+       
+        leds[i].pos+=leds[i].direction;
+        if(leds[i].pos<0||leds[i].pos>count){
+            leds[i].bounches++;
+            if( leds[i].bounches == 3 ){
+                RGB_t color = cpicker();
+                leds[i].G = color.G;//G
+                leds[i].R = color.R;//R
+                leds[i].B = color.B; //B
+                leds[i].bounches = 0;
+            }
+            leds[i].direction = -leds[i].direction;
+        }
+    }
+    return 40;
 }

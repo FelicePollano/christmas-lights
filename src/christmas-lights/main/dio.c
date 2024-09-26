@@ -18,7 +18,7 @@ void dio(void* ctx){
     int current_color=0;
     ESP_ERROR_CHECK(gpio_set_direction(MODENEXT,GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_pull_mode(MODENEXT,GPIO_PULLUP_ONLY));
-     ESP_ERROR_CHECK(gpio_set_direction(CCHANGE,GPIO_MODE_INPUT));
+    ESP_ERROR_CHECK(gpio_set_direction(CCHANGE,GPIO_MODE_INPUT));
     ESP_ERROR_CHECK(gpio_set_pull_mode(CCHANGE,GPIO_PULLUP_ONLY));
     while(1){
         int pin = gpio_get_level(MODENEXT);
