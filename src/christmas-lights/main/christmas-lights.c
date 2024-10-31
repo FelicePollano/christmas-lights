@@ -10,6 +10,7 @@
 #include "spark_0.h"
 #include "twirl_sparks.h"
 #include "spark_fade.h"
+#include "alt.h"
 
 #define LED1 16
 #define LEDCOUNT 600
@@ -26,6 +27,9 @@ static Mode_t modes[]={
     ,{.init=twirls_init,.run=twirls_run_bounch,.clean=twirls_clean} //random sparks of multicolor lights twirling and bounching at the end 
     ,{.init=spark_fade_init,.run=spark_fade_run,.clean=spark_fade_clean} //fading sparks
     ,{.init=spark_fade_init_inv,.run=spark_fade_run_inv,.clean=spark_fade_clean} //un-fading sparks 
+    ,{.init=alt_init,.run=alt_run,.clean=alt_clean} //alternate up down 
+    ,{.init=alt_init,.run=alt_run2,.clean=alt_clean} //alternate  down 
+    ,{.init=alt_init,.run=alt_run3,.clean=alt_clean} //alternate  up/down with some random
 };
 static  RGB_t (*cpickers[])()={
     hi_cpicker,
