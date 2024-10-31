@@ -62,7 +62,7 @@ int twirls_run_bounch(uint8_t *data,int count,RGB_t (*cpicker)()){
         data[leds[i].pos*3+2]=leds[i].B;
        
         leds[i].pos+=leds[i].direction;
-        if(leds[i].pos<0||leds[i].pos>count){
+        if(leds[i].pos<=0||leds[i].pos>=count){
             leds[i].bounches++;
             if( leds[i].bounches == 3 ){
                 RGB_t color = cpicker();
