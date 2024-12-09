@@ -5,7 +5,7 @@
 #include <math.h>
 #include "cl.h"
 
-#define SPARK_SIZE 120
+#define SPARK_SIZE 280
 
 typedef struct DL
 {

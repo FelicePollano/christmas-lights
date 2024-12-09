@@ -3,7 +3,7 @@
 #include "esp_random.h"
 #include "cl.h"
 
-#define SPARK_COUNT 50
+#define SPARK_COUNT 120
 
 typedef struct DL
 {

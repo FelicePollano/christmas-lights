@@ -2,7 +2,7 @@
 #include "esp_random.h"
 #include "cl.h"
 
-#define SPARK_SIZE 30
+#define SPARK_SIZE 60
 
 static int spark[SPARK_SIZE];
 
